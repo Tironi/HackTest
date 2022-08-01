@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'Pages/Home.dart';
+
+import 'package:hack_bz/config/routes_manager.dart';
+import 'package:hack_bz/config/theme_manager.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,10 +15,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Hackaton BZ',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const myHomePage(title: 'Hackaton BZ'),
+      theme: getApplicationTheme(),
+        
+      initialRoute: Routes.home,
+      onGenerateRoute: RouteGenerator.getRoute,
+   
     );
   }
 }
