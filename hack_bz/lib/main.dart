@@ -1,9 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hack_bz/config/firebase_options.dart';
 
 import 'package:hack_bz/config/routes_manager.dart';
 import 'package:hack_bz/config/theme_manager.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -16,10 +20,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Hackaton BZ',
       theme: getApplicationTheme(),
-        
       initialRoute: Routes.home,
       onGenerateRoute: RouteGenerator.getRoute,
-   
     );
   }
 }
