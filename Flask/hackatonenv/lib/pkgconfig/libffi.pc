@@ -1,0 +1,11 @@
+prefix=/Users/marcovinciguerra/opt/anaconda3/envs/hackatonenv
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+toolexeclibdir=${libdir}
+includedir=/Users/marcovinciguerra/opt/anaconda3/envs/hackatonenv/include
+
+Name: libffi
+Description: Library supporting Foreign Function Interfaces
+Version: 3.3
+Libs: -L${toolexeclibdir} -lffi
+Cflags: -I${includedir}

@@ -1,0 +1,19 @@
+#
+# Author: Lasse Collin
+#
+# This file has been put into the public domain.
+# You can do whatever you want with this file.
+#
+
+prefix=/Users/marcovinciguerra/opt/anaconda3/envs/hackatonenv
+exec_prefix=/Users/marcovinciguerra/opt/anaconda3/envs/hackatonenv
+libdir=/Users/marcovinciguerra/opt/anaconda3/envs/hackatonenv/lib
+includedir=/Users/marcovinciguerra/opt/anaconda3/envs/hackatonenv/include
+
+Name: liblzma
+Description: General purpose data compression library
+URL: https://tukaani.org/xz/
+Version: 5.2.5
+Cflags: -I${includedir}
+Libs: -L${libdir} -llzma
+Libs.private: -pthread -lpthread

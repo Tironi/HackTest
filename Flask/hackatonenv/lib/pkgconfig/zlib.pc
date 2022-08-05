@@ -1,0 +1,13 @@
+prefix=/Users/marcovinciguerra/opt/anaconda3/envs/hackatonenv
+exec_prefix=/Users/marcovinciguerra/opt/anaconda3/envs/hackatonenv
+libdir=/Users/marcovinciguerra/opt/anaconda3/envs/hackatonenv/lib
+sharedlibdir=/Users/marcovinciguerra/opt/anaconda3/envs/hackatonenv/lib
+includedir=/Users/marcovinciguerra/opt/anaconda3/envs/hackatonenv/include
+
+Name: zlib
+Description: zlib compression library
+Version: 1.2.12
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lz
+Cflags: -I${includedir}

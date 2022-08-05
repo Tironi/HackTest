@@ -1,0 +1,9 @@
+prefix=/Users/marcovinciguerra/opt/anaconda3/envs/hackatonenv
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: OpenSSL
+Description: Secure Sockets Layer and cryptography libraries and tools
+Version: 1.1.1q
+Requires: libssl libcrypto
