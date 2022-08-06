@@ -6,7 +6,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 #Windows Path
-PATH = "C:/Users/vedov/Downloads/chromedriver.exe"
+#PATH = "C:/Users/vedov/Downloads/chromedriver.exe"
+
+#Mac path 
+PATH = "/Users/marcovinciguerra/Github/HackTest/Flask/ChromeDriver/chromedriver"
 
 options = webdriver.ChromeOptions()
 options.add_experimental_option("useAutomationExtension", False)
@@ -15,7 +18,7 @@ options.add_experimental_option("excludeSwitches",["enable-automation"])
 with webdriver.Chrome(executable_path=PATH, chrome_options=options) as driver:
     driver.implicitly_wait(10)
     driver.get("https://www.demoblaze.com/")
-    driver.find_element(By.LINK_TEXT, "Samsung galaxy s6").click() # seleziona cell
+    """driver.find_element(By.LINK_TEXT, "Samsung galaxy s6").click() # seleziona cell
     prezzo = driver.find_element(By.CLASS_NAME, "price-container").text
     driver.find_element(By.LINK_TEXT, "Add to cart").click()
     driver.find_element(By.ID, "cartur").click()
@@ -32,10 +35,10 @@ with webdriver.Chrome(executable_path=PATH, chrome_options=options) as driver:
     driver.find_element(By.ID, "month").send_keys("22")
     driver.find_element(By.ID, "year").click()
     driver.find_element(By.ID, "year").send_keys("23")
-    driver.find_element(By.CSS_SELECTOR, "#orderModal .btn-primary").click()
+    driver.find_elemssent(By.CSS_SELECTOR, "#orderModal .btn-primary").click()
 
     time.sleep(2)
-    driver.quit()
+    driver.quit()"""
 
 ### PRODUCTS ###
 ## CHECK ##
@@ -56,7 +59,7 @@ def checkDevice(name):
     return found
 
 # Controllo prezzo - id: 1
-def chackPrize():
+def chackPrice():
     textPrize = driver.find_element(By.CLASS_NAME, "price-container").text
     return textPrize.split()[0][1:]
 
@@ -117,10 +120,10 @@ def visione(name):
     
 # Selezione categoria - id: 6
 def selectCategory(category):
-    # itemc
+    # itemc-> smartphone
     # Laptops
     # Monitors
-    if(category == "itemc"):
+    if(category == "Phones"):
         driver.find_element(By.ID, "itemc").click()
     else:
         driver.find_element(By.LINK_TEXT, category).click()
@@ -154,12 +157,13 @@ def delete():
 def placeOrder():
     driver.find_element(By.CSS_SELECTOR, ".btn-success").click()
 
+#Todo: aggiungere un dizionario
 def runner(listActionsId):
     for action in listActionsId:
         if action == 0:# Controllo presenza device - id: 0
             checkDevice(name)
         elif action == 1:# Controllo prezzo - id: 1    
-            chackPrize()
+            chackPrice()
         elif action == 2:# Presenza prodotti nel carrello - id: 2
             checkCartList()
         elif action == 3:# Calcolo totale - id: 3
