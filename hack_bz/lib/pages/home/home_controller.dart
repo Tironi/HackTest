@@ -7,8 +7,15 @@ class _HomePageController extends State<HomePage> {
     return processCard;
   }
 
+  // 0: clessidra
+  // 1: loading
+  // 2: tic
+  int value = 0;
   bool iconflag = false;
-
+  Icon icona = const Icon(
+    Icons.hourglass_bottom,
+    color: Colors.white,
+  );
   List<WidgetItem> lists = [];
   List<WidgetItem> _getLists() {
     List<WidgetItem> lists = [];
@@ -33,10 +40,13 @@ class _HomePageController extends State<HomePage> {
     return const Text("ciao");
   }
 
+  Icon checkicon() {
+    return icona;
+  }
+
   void onListTileTap(String name, Types tipo) {
     setState(() {
-      processCard.add(
-          ProcessCard(0, name, "descitption", Icons.hourglass_bottom, tipo));
+      processCard.add(ProcessCard(0, name, "", Icons.hourglass_bottom, tipo));
     });
   }
 
@@ -50,7 +60,21 @@ class _HomePageController extends State<HomePage> {
 
   void setIconflag() {
     setState(() {
-      iconflag = true;
+      icona = const Icon(
+        Icons.circle,
+        color: Colors.white,
+      );
+    });
+    Future.delayed(const Duration(milliseconds: 2000), () {
+// Here you can write your code
+
+      setState(() {
+        icona = const Icon(
+          Icons.check,
+          color: Colors.white,
+        );
+        iconflag = true;
+      });
     });
   }
 }

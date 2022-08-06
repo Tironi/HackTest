@@ -1,11 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hack_bz/models/processCard.dart';
 import 'package:hack_bz/models/widget.dart';
 import 'package:hack_bz/widget_view/widget_view.dart';
-
 import 'package:http/http.dart' as http;
 
 part 'package:hack_bz/pages/home/home_controller.dart';
@@ -27,7 +27,7 @@ class _HomePageView extends StatefulView<HomePage, _HomePageController> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        title: const Text("ART"),
+        title: const Text("ModulTest"),
         centerTitle: true,
       ),
       body: StaggeredGrid.count(
@@ -79,28 +79,15 @@ class _HomePageView extends StatefulView<HomePage, _HomePageController> {
                         Container(
                           margin: const EdgeInsets.only(left: 8, right: 5),
                           padding: const EdgeInsets.all(10),
+                          //TODO: cambio il colore
                           decoration: BoxDecoration(
                               color: controller.iconflag == true
                                   ? Colors.green
                                   : Colors.grey,
                               borderRadius: BorderRadius.circular(50)),
-                          child: controller.iconflag == true
-                              ? Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                )
-                              : Icon(
-                                  Icons.hourglass_bottom,
-                                  color: Colors.white,
-                                ),
+                          child: controller.checkicon(),
                         ),
-                        Container(
-                          width: 2,
-                          height: 60,
-                          color: index == controller.processCard.length - 1
-                              ? Colors.white
-                              : Colors.black,
-                        ),
+                        Container(width: 2, height: 60, color: Colors.white),
                       ]),
                       Row(
                         children: [
@@ -173,12 +160,9 @@ class _HomePageView extends StatefulView<HomePage, _HomePageController> {
                                               child: Column(
                                                 children: [
                                                   TextFormField(
-                                                    decoration: InputDecoration(
-                                                      border: InputBorder.none,
-                                                    ),
-                                                  ),
-                                                  TextFormField(
-                                                    decoration: InputDecoration(
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      hintText: "Input:",
                                                       border: InputBorder.none,
                                                     ),
                                                   ),
