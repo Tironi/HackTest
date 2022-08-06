@@ -5,21 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "hack_bz",
+            "name": "Launch Chrome",
             "request": "launch",
-            "type": "dart"
+            "type": "chrome",
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}"
         },
-        {
-            "name": "hack_bz (profile mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile"
-        },
-        {
-            "name": "hack_bz (release mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
-        }
     ]
 }

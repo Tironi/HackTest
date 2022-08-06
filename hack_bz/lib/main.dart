@@ -1,18 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hack_bz/config/firebase_options.dart';
-import 'dart:io' show Platform;
+
 import 'package:hack_bz/config/routes_manager.dart';
 import 'package:hack_bz/config/theme_manager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  if (Platform.isAndroid) {
-    runApp(
-      const MyApp(),
-    );
-  }
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -22,7 +18,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Hackaton BZ',
+      title: 'Flutter Hackaton BZ',
+      debugShowCheckedModeBanner: false,
       theme: getApplicationTheme(),
       initialRoute: Routes.home,
       onGenerateRoute: RouteGenerator.getRoute,
