@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import time
+from tokenize import String
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
@@ -63,6 +64,8 @@ def checktransition(driver, dictionary):
     driver.find_element(By.ID, "year").click()
     driver.find_element(By.ID, "year").send_keys(dictionary.get("year"))
 
+    driver.find_element(By.CSS_SELECTOR, "#orderModal .btn-primary").click()
+    
     #Controllo
     result = {}
     result['name'] = driver.find_element(By.ID, "name").text
@@ -77,6 +80,16 @@ def checktransition(driver, dictionary):
 
     result['year'] = driver.find_element(By.ID, "year").text
 
+    result = {}
+    text = driver.find_element(By.CLASS_NAME, "lead").text.split("\n")
+    result['name'] = text[3].split()[-1]
+
+    result['amount'] = text[1].split()[1]
+
+    result['card'] = text[2].split()[-1]
+
+    result['date'] = text[4].split()[-1]
+    
     #Invio dei dati
     return result
 
@@ -124,35 +137,9 @@ def delete(driver):
 def placeOrder(driver):
     driver.find_element(By.CSS_SELECTOR, ".btn-success").click()
 
-def runner(driver, listActionsId):
-    for action in listActionsId:
-        if action == 0:# Controllo presenza device - id: 0
-            checkDevice(driver, name)
-        elif action == 1:# Controllo prezzo - id: 1    
-            chackPrize(driver)
-        elif action == 2:# Presenza prodotti nel carrello - id: 2
-            checkCartList(driver)
-        elif action == 3:# Calcolo totale - id: 3
-            calctot(driver)
-        elif action == 4:# Controllo transizione - id: 4
-            checktransition(driver, dictionary)
-        elif action == 5:# Visione device - id: 5 
-            visione(driver, name)
-        elif action == 6:# Selezione categoria - id: 6
-            selectCategory(driver, category)
-        elif action == 7:# Selezione device e basta - id: 7
-            selectDevice(driver, name)
-        elif action == 8:# Aggiungi al carrello - id: 8
-            AddtoCart(driver)
-        elif action == 9:# Visione carrello - id: 9
-            openCart(driver)
-        elif action == 10:# Delete - id: 10
-            delete(driver)
-        elif action == 11:# Place order - id: 11
-            placeOrder(driver)
-
 def countiteration(dictionarytoProcess):
     flag = False
+    lunghezza = 1
     for value in dictionarytoProcess.values():
         for mini in value:
             for elem in mini.values():
@@ -169,6 +156,49 @@ def countiteration(dictionarytoProcess):
                 #print(elem)
                 flag = True      
     return lunghezza
+
+def runner(driver, dictionry):
+    n = countiteration(dictionry)
+    outDict = {"array": []}
+    for i in range(0, n):
+        for actionDict in dictionry.get("array"):
+            action = int(actionDict.get("id"))
+            print(action)
+            if action == 0:# Controllo presenza device - id: 0
+                check = checkDevice(driver, actionDict.get("params")[0].get(str(i+1)))
+                outDict.get("array").append({"id": str(action), "params": [{str(i+1): check}]})
+                
+            elif action == 1:# Controllo prezzo - id: 1    
+                textPrice = chackPrize(driver)
+                outDict.get("array").append({"id":  str(action), "params": [{str(i+1): textPrice}]})
+                
+            elif action == 2:# Presenza prodotti nel carrello - id: 2
+                cartList = checkCartList(driver)
+                outDict.get("array").append({"id":  str(action), "params": [{str(i+1): cartList}]})
+            elif action == 3:# Calcolo totale - id: 3
+                total = calctot(driver)
+                outDict.get("array").append({"id":  str(action), "params": [{str(i+1): total}]})
+            elif action == 4:# Controllo transizione - id: 4
+                result = checktransition(driver, actionDict.get("params")[0].get(str(i+1)))
+                print(result)
+                outDict.get("array").append({"id":  str(action), "params": [{str(i+1): result}]})
+            elif action == 5:# Visione device - id: 5 
+                visione(driver, actionDict.get("params")[0].get(str(i+1)))
+            elif action == 6:# Selezione categoria - id: 6
+                selectCategory(driver, actionDict.get("params")[0].get(str(i+1)))
+            elif action == 7:# Selezione device e basta - id: 7
+                selectDevice(driver, actionDict.get("params")[0].get(str(i+1)))
+            elif action == 8:# Aggiungi al carrello - id: 8
+                AddtoCart(driver)
+            elif action == 9:# Visione carrello - id: 9
+                openCart(driver)
+            elif action == 10:# Delete - id: 10
+                delete(driver)
+            elif action == 11:# Place order - id: 11
+                placeOrder(driver)
+    return outDict
+
+
 
 def main():
     options = webdriver.ChromeOptions()
@@ -205,16 +235,19 @@ class HttpHandler(BaseHTTPRequestHandler):
         options.add_experimental_option("useAutomationExtension", False)
         options.add_experimental_option("excludeSwitches",["enable-automation"])
 
+        outDict={}
+
         with webdriver.Chrome(executable_path=PATH, chrome_options=options) as driver:
             driver.implicitly_wait(10)
             driver.get("https://www.demoblaze.com/")
+            outDict = runner(driver, dictJson)
             
         
         # send data
         self.send_response(200)
         self.send_header("Content-type", "application/json")
         self.end_headers()
-        self.wfile.write(bytes("CIAO", "utf-8"))
+        self.wfile.write(bytes(json.dumps(outDict), "utf-8"))
     
 
 #Windows Path
