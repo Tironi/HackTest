@@ -1,4 +1,4 @@
-enum Types{
+enum Types {
   control,
   action,
 }
@@ -6,17 +6,18 @@ enum Types{
 class WidgetItem {
   String name;
   Types type;
+  String description;
 
-  WidgetItem(this.name, this.type);
+  WidgetItem(
+    this.name,
+    this.type,
+    this.description,
+  );
 
   factory WidgetItem.fromJson(Map<String, dynamic> json) {
-    return WidgetItem(
-      json['name'],
-      json['type'],
-    );
+    return WidgetItem(json['name'], json['type'], json['description']);
   }
 }
-
 
 class DraggableList {
   final String header;

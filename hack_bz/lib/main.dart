@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hack_bz/config/firebase_options.dart';
-
 import 'package:hack_bz/config/routes_manager.dart';
 import 'package:hack_bz/config/theme_manager.dart';
 

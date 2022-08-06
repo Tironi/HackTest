@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hack_bz/models/processCard.dart';
@@ -9,7 +11,6 @@ import 'package:http/http.dart' as http;
 part 'package:hack_bz/pages/home/home_controller.dart';
 
 class HomePage extends StatefulWidget {
-
   HomePage({Key? key}) : super(key: key);
 
   @override
@@ -17,13 +18,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageView extends StatefulView<HomePage, _HomePageController> {
-  
-  const _HomePageView(_HomePageController controller, {Key? key}) : super(controller, key: key);
+  const _HomePageView(_HomePageController controller, {Key? key})
+      : super(controller, key: key);
 
   @override
   Widget build(BuildContext context) {
     final backgroundColor = Color.fromARGB(255, 243, 242, 248);
-
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -38,30 +38,30 @@ class _HomePageView extends StatefulView<HomePage, _HomePageController> {
           StaggeredGridTile.count(
             crossAxisCellCount: 1,
             mainAxisCellCount: 1,
-            child: 
-            ListView.builder(
-              itemCount: controller.lists.length,
-              itemBuilder: (context, i) {
-                return Card(
-                  child: ListTile(
-                      textColor: controller.lists.elementAt(i).type == Types.action ? Colors.red : Colors.blue,
-                      title: Text(controller.lists.elementAt(i).name),
-                      leading: const Icon(Icons.add),
-                      onTap: () => controller.onListTileTap(controller.lists.elementAt(i).name, controller.lists.elementAt(i).type)
-                      ));
-                    }
-              ),
+            child: ListView.builder(
+                itemCount: controller.lists.length,
+                itemBuilder: (context, i) {
+                  return Card(
+                      child: ListTile(
+                          textColor:
+                              controller.lists.elementAt(i).type == Types.action
+                                  ? Colors.red
+                                  : Colors.blue,
+                          title: Text(controller.lists.elementAt(i).name),
+                          leading: const Icon(Icons.add),
+                          onTap: () => controller.onListTileTap(
+                              controller.lists.elementAt(i).name,
+                              controller.lists.elementAt(i).type)));
+                }),
           ),
-
           StaggeredGridTile.count(
             crossAxisCellCount: 3,
             mainAxisCellCount: 3,
-              child:
-                ListView.builder(
-                  itemCount: controller.processCard.length,
-                  itemBuilder: (context, index){
+            child: ListView.builder(
+                itemCount: controller.processCard.length,
+                itemBuilder: (context, index) {
                   return Row(
-                    children:<Widget> [
+                    children: <Widget>[
                       Column(children: <Widget>[
                         AnimatedContainer(
                           duration: const Duration(milliseconds: 1000),
@@ -69,107 +69,161 @@ class _HomePageView extends StatefulView<HomePage, _HomePageController> {
                           width: 2,
                           color: true ? Colors.red : Colors.blue,
                           child: Container(
-                                width: 2,
-                                height: 60,
-                                color: index == controller.processCard.length - 1 ? Colors.white : Colors.black,
-                            ),
-                        ),   
+                            width: 2,
+                            height: 60,
+                            color: index == controller.processCard.length - 1
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
                         Container(
                           margin: const EdgeInsets.only(left: 8, right: 5),
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(50)
-                          ),
-                          child: Icon(controller.processCard[index].icon, color: Colors.white,),
+                              color: controller.iconflag == true
+                                  ? Colors.green
+                                  : Colors.grey,
+                              borderRadius: BorderRadius.circular(50)),
+                          child: controller.iconflag == true
+                              ? Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                )
+                              : Icon(
+                                  Icons.hourglass_bottom,
+                                  color: Colors.white,
+                                ),
                         ),
                         Container(
-                            width: 2,
-                            height: 60,
-                            color: index == controller.processCard.length - 1 ? Colors.white : Colors.black,
+                          width: 2,
+                          height: 60,
+                          color: index == controller.processCard.length - 1
+                              ? Colors.white
+                              : Colors.black,
                         ),
                       ]),
-
-                    Row(
-                      children: [
-                        Container(
-                            margin: const EdgeInsets.all(10),
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              border: Border(top: BorderSide(width: 3, color: Colors.grey,), left: BorderSide(width: 3, color: Colors.grey,),),
-                              boxShadow: [BoxShadow(
-                                  blurRadius: 5,
-                                  color: Colors.black26,
-                              )]
-                            ),
-                          height: 140,
-                          child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget> [
-                                Text(controller.processCard[index].title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey),),
-                                Text(controller.processCard[index].description, style: const TextStyle(fontSize: 17, letterSpacing: 2),),
-                              ],
-                          ),
-                          ),
-                        ),
-                        if(controller.processCard[index].type == Types.action) 
+                      Row(
+                        children: [
                           Container(
-                            width: 500,
-                            height: 140,
-                            child: Card(
-                              color: Colors.white,
-                              child: Container(
-                                padding: EdgeInsets.all(10.0),
-                                child: new Column(
-                                  children: <Widget>[
-                                    new Row(
-                                      children: <Widget>[
-                                        new Expanded(
-                                          child: new TextFormField(
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                            )
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                            width: 300,
+                            margin: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border(
+                                  top: BorderSide(
+                                    width: 3,
+                                    color: controller.iconflag == true
+                                        ? Colors.green
+                                        : Colors.grey,
+                                  ),
+                                  left: BorderSide(
+                                    width: 3,
+                                    color: controller.iconflag == true
+                                        ? Colors.green
+                                        : Colors.grey,
+                                  ),
                                 ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 5,
+                                    color: Colors.black26,
+                                  )
+                                ]),
+                            height: 140,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    controller.processCard[index].title,
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey),
+                                  ),
+                                  Text(
+                                    controller.processCard[index].description,
+                                    style: const TextStyle(
+                                        fontSize: 17, letterSpacing: 2),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                      ],
-                    )
-                    ],);
-          }),
+                          if (controller.processCard[index].type ==
+                              Types.action)
+                            //TODO
+                            //Devo fare due container
+                            //Uno per l'input e uno per l'ouput
+                            Container(
+                              width: 500,
+                              height: 140,
+                              child: Card(
+                                color: Colors.white,
+                                child: Container(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Row(
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Container(
+                                              width: 200,
+                                              child: Column(
+                                                children: [
+                                                  TextFormField(
+                                                    decoration: InputDecoration(
+                                                      border: InputBorder.none,
+                                                    ),
+                                                  ),
+                                                  TextFormField(
+                                                    decoration: InputDecoration(
+                                                      border: InputBorder.none,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      )
+                    ],
+                  );
+                }),
           ),
-
         ],
-      )
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.send),
+        onPressed: (() {
+          controller.setIconflag();
+        }),
+      ),
     );
   }
 }
 
 class WidgetCard extends StatelessWidget {
-  
-  WidgetCard(this.name, { Key? key }) : super(key: key);
+  WidgetCard(this.name, {Key? key}) : super(key: key);
   late String name;
 
   @override
   Widget build(BuildContext context) {
     return Card(
-          child: const ListTile(
-            title: Text("Codesinsider.com"),
-          ),
-          elevation: 8,
-          shadowColor: Colors.green,
-          shape: BeveledRectangleBorder(
-              borderRadius: BorderRadius.circular(15)
-          ),
-        );
+      child: const ListTile(
+        title: Text("Codesinsider.com"),
+      ),
+      elevation: 8,
+      shadowColor: Colors.green,
+      shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(15)),
+    );
   }
 }
-
-
