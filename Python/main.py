@@ -150,8 +150,26 @@ def runner(driver, listActionsId):
             delete(driver)
         elif action == 11:# Place order - id: 11
             placeOrder(driver)
-        
-    
+
+def countiteration(dictionarytoProcess):
+    flag = False
+    for value in dictionarytoProcess.values():
+        for mini in value:
+            for elem in mini.values():
+            #print(elem)
+             if(flag == True):
+                 #print(elem)
+                 xi = json.dumps(elem)
+                 #print(xi)
+                 x = xi.split(",")
+                 print(x)
+                 lunghezza = len(x)
+                 flag = False     
+            if(elem == "5"):
+                #print(elem)
+                flag = True      
+    return lunghezza
+
 def main():
     options = webdriver.ChromeOptions()
     options.add_experimental_option("useAutomationExtension", False)
